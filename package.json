@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -13,13 +14,15 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
   "bugs": {
     "url": "https://github.com/keshankumara/my-github-readme-stats/issues"
   },
   "homepage": "https://github.com/keshankumara/my-github-readme-stats#readme",
   "dependencies": {
+    "@resvg/resvg-js": "^2.6.2",
     "axios": "^1.13.2",
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "react": "^18.3.1",
+    "satori": "^0.10.13"
   }
 }
