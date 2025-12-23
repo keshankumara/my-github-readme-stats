@@ -32,28 +32,33 @@ app.get("/api/stats/:username", async (req, res) => {
 });
 
 app.get("/api/stats-svg/:username", async (req, res) => {
-  const username = req.params.username;
-  const userRes = await axios.get(`https://api.github.com/users/${username}`);
-  const followers = userRes.data.followers;
+  try {
+    const username = req.params.username;
+    const userRes = await axios.get(`https://api.github.com/users/${username}`);
+    const followers = userRes.data.followers;
 
-  const fontUrl = 'https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiJ-Ek-_EeA.woff2';
-  const fontResponse = await axios.get(fontUrl, { responseType: 'arraybuffer' });
-  const fontData = fontResponse.data;
+    const fontUrl = 'https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiJ-Ek-_EeA.woff2';
+    const fontResponse = await axios.get(fontUrl, { responseType: 'arraybuffer' });
+    const fontData = fontResponse.data;
 
-  const svg = await satori(
-    React.createElement('div', { style: { fontSize: 24, color: "#4F46E5", fontFamily: 'Inter' } }, `${username} • Followers: ${followers}`),
-    { 
-      width: 400, 
-      height: 100,
-      fonts: [{ name: 'Inter', data: fontData, weight: 400, style: 'normal' }]
-    }
-  );
+    const svg = await satori(
+      React.createElement('div', { style: { fontSize: 24, color: "#4F46E5", fontFamily: 'Inter' } }, `${username} • Followers: ${followers}`),
+      { 
+        width: 400, 
+        height: 100,
+        fonts: [{ name: 'Inter', data: fontData, weight: 400, style: 'normal' }]
+      }
+    );
 
-  const resvg = new Resvg(svg);
-  const pngData = resvg.render();
-  const pngBuffer = pngData.asPng();
-  res.setHeader('Content-Type', 'image/png');
-  res.send(pngBuffer);
+    const resvg = new Resvg(svg);
+    const pngData = resvg.render();
+    const pngBuffer = pngData.asPng();
+    res.setHeader('Content-Type', 'image/png');
+    res.send(pngBuffer);
+  } catch (err) {
+    console.error('Error generating SVG/PNG:', err);
+    res.status(500).json({ error: "Failed to generate image" });
+  }
 });
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
