@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/keshankumara/my-github-readme-stats#readme",
   "dependencies": {
+    "@fontsource/roboto": "^5.0.13",
     "@resvg/resvg-js": "^2.6.2",
     "axios": "^1.13.2",
     "express": "^5.2.1",
