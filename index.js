@@ -4,6 +4,7 @@ import { Resvg } from '@resvg/resvg-js';
 import satori from 'satori';
 import React from 'react';
 import fs from 'fs';
+import 'dotenv/config';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -35,8 +36,9 @@ app.get("/api/stats/:username", async (req, res) => {
 app.get("/api/stats-svg/:username", async (req, res) => {
   try {
     const username = req.params.username;
-    const userRes = await axios.get(`https://api.github.com/users/${username}`, { timeout: 10000 });
-    const reposRes = await axios.get(`https://api.github.com/users/${username}/repos?per_page=100`, { timeout: 10000 });
+    const headers = process.env.GITHUB_TOKEN ? { 'Authorization': `token ${process.env.GITHUB_TOKEN}` } : {};
+    const userRes = await axios.get(`https://api.github.com/users/${username}`, { timeout: 10000, headers });
+    const reposRes = await axios.get(`https://api.github.com/users/${username}/repos?per_page=100`, { timeout: 10000, headers });
 
     const totalRepos = reposRes.data.length;
     const followers = userRes.data.followers;
